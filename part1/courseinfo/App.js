@@ -1,10 +1,11 @@
 const Header = (header) => {
+  console.log(header)
   return <h1>{header.course_name}</h1>;
 };
 
-const Content = (content) => {
-  return content.parts.map((item) => {
-    return <Part name={item.name} exercises={item.exercises} />;
+const Content = (props) => {
+  return props.parts.map((a, key) => {
+    return <Part key={key} name={a.name} exercises={a.exercises} />;
   });
 };
 
