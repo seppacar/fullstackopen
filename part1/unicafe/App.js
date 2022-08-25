@@ -9,13 +9,21 @@ const Print = ({type, count}) => (
   <p>{type} {count}</p>
 );
 
-const Statistics = ({neutral, good, bad}) => (
+const Statistics = ({neutral, good, bad}) => {
+  total = neutral + good + bad;
+  console.log(total)
+
+  if (total <= 0){
+    return(<p>No feedback given</p>)
+  }
+  return(
   <div>
-      <p>total {neutral + good + bad}</p>
-      <p>average {(good+(bad*-1))/(neutral + good + bad)}</p>
-      <p>positive {good*(100/(neutral+good+bad))} %</p>
+      <p>total {total}</p>
+      <p>average {(good+(bad*-1))/(total)}</p>
+      <p>positive {good*(100/(total))} %</p>
   </div>
-);
+  );
+};
 
 
 const App = () => {
