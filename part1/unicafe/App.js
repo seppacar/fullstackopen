@@ -4,12 +4,17 @@ const Button = ({handleClick, text}) => (
   <button onClick={handleClick}>{text}</button>
 );
 
-const Feedback = ({good, neutral, bad}) => (
-  <></>
-);
 
 const Print = ({type, count}) => (
   <p>{type} {count}</p>
+);
+
+const Statistics = ({neutral, good, bad}) => (
+  <div>
+      <p>total {neutral + good + bad}</p>
+      <p>average {(good+(bad*-1))/(neutral + good + bad)}</p>
+      <p>positive {good*(100/(neutral+good+bad))} %</p>
+  </div>
 );
 
 
@@ -29,6 +34,7 @@ const App = () => {
     <Print type="good" count={good}/>
     <Print type="neutral" count={neutral}/>
     <Print type="bad" count={bad}/>
+    <Statistics good={good} bad={bad} neutral={neutral}/>
 
     </div>
   )
