@@ -4,11 +4,15 @@ const Button = ({handleClick, text}) => (
   <button onClick={handleClick}>{text}</button>
 );
 
+const Feedback = ({good, neutral, bad}) => (
+  <></>
+);
 
 const Print = ({type, count}) => (
   <p>{type} {count}</p>
 );
 
+<<<<<<< HEAD
 const Statistics = ({neutral, good, bad}) => {
   total = neutral + good + bad;
   console.log(total)
@@ -25,6 +29,8 @@ const Statistics = ({neutral, good, bad}) => {
   );
 };
 
+=======
+>>>>>>> parent of 375979c... exercise 1.7
 
 const App = () => {
   // save clicks of each button to its own state
@@ -42,7 +48,6 @@ const App = () => {
     <Print type="good" count={good}/>
     <Print type="neutral" count={neutral}/>
     <Print type="bad" count={bad}/>
-    <Statistics good={good} bad={bad} neutral={neutral}/>
 
     </div>
   )
