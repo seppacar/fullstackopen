@@ -12,25 +12,6 @@ const Print = ({type, count}) => (
   <p>{type} {count}</p>
 );
 
-<<<<<<< HEAD
-const Statistics = ({neutral, good, bad}) => {
-  total = neutral + good + bad;
-  console.log(total)
-
-  if (total <= 0){
-    return(<p>No feedback given</p>)
-  }
-  return(
-  <div>
-      <p>total {total}</p>
-      <p>average {(good+(bad*-1))/(total)}</p>
-      <p>positive {good*(100/(total))} %</p>
-  </div>
-  );
-};
-
-=======
->>>>>>> parent of 375979c... exercise 1.7
 
 const App = () => {
   // save clicks of each button to its own state
