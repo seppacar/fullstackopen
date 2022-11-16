@@ -1,4 +1,4 @@
-const Persons = ({ persons, filter }) => {
+const Persons = ({ persons, filter, destroyPerson }) => {
   return (
     <div>
       {persons
@@ -8,7 +8,10 @@ const Persons = ({ persons, filter }) => {
         .map((person) => (
           <p key={person.id}>
             {" "}
-            {person.name} {person.number}
+            {person.name} {person.number}{" "}
+            <button onClick={() => destroyPerson(person.id, person.name)}>
+              delete
+            </button>
           </p>
         ))}
     </div>

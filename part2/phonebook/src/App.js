@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 
+import personService from "./services/persons";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
@@ -11,10 +11,8 @@ const App = () => {
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
-    console.log("effect");
-    axios.get("http://localhost:3001/persons").then((response) => {
-      console.log("promise fulfilled");
-      setPersons(response.data);
+    personService.getAll().then((initialPersons) => {
+      setPersons(initialPersons);
     });
   }, []);
 
@@ -22,18 +20,44 @@ const App = () => {
     event.preventDefault();
     const checkName = (obj) => obj.name === newPerson.name;
     if (persons.some(checkName)) {
-      alert(newPerson.name + " is already added to phonebook");
+      const currentPerson = persons.filter(
+        (person) => person.name === newPerson.name
+      );
+      if (
+        window.confirm(
+          newPerson.name +
+            " is already added to phonebook you want the replace the old number?"
+        )
+      ) {
+        personService
+          .update(currentPerson[0].id, newPerson)
+          .then((response) => {
+            const updatedPersons = persons.map((person) =>
+              person.id !== response.id ? person : response
+            );
+            setPersons(updatedPersons);
+          });
+      }
       return;
     }
-    setPersons(
-      persons.concat({
-        name: newPerson.name,
-        number: newPerson.number,
-        id: persons.length + 1,
-      })
-    );
+    const personObject = {
+      name: newPerson.name,
+      number: newPerson.number,
+    };
+    personService.create(personObject).then((returnedPerson) => {
+      setPersons(persons.concat(returnedPerson));
+      setNewPerson({ name: "", number: "" });
+    });
+  };
 
-    setNewPerson({ name: "", number: "" });
+  const destroyPerson = (id, name) => {
+    if (window.confirm(`Do you really want to delete ${name}`)) {
+      personService.destroy(id).then(
+        personService.getAll().then((initialPersons) => {
+          setPersons(initialPersons);
+        })
+      );
+    }
   };
 
   const handleChange = (event) => {
@@ -58,7 +82,11 @@ const App = () => {
       />
 
       <h3>Numbers</h3>
-      <Persons persons={persons} filter={filter} />
+      <Persons
+        persons={persons}
+        filter={filter}
+        destroyPerson={destroyPerson}
+      />
     </div>
   );
 };
