@@ -52,11 +52,7 @@ const App = () => {
 
   const destroyPerson = (id, name) => {
     if (window.confirm(`Do you really want to delete ${name}`)) {
-      personService.destroy(id).then(
-        personService.getAll().then((initialPersons) => {
-          setPersons(initialPersons);
-        })
-      );
+      personService.destroy(id).then(setPersons(persons.filter((person) => {return (person.id !== id)})));
     }
   };
 
