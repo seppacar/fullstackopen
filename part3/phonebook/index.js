@@ -1,17 +1,10 @@
+require('dotenv').config()
 const express = require("express");
 const morgan = require("morgan");
+const mongoose = require("mongoose");
 const app = express();
 const cors = require("cors");
-
-app.use(cors());
-app.use(express.json());
-app.use(express.static("build"));
-morgan.token("body", (req) => {
-  return JSON.stringify(req.body);
-});
-app.use(
-  morgan(":method :url :status :res[content-length] - :response-time ms :body")
-);
+const Person = require('./models/person')
 
 let persons = [
   {
@@ -36,8 +29,20 @@ let persons = [
   },
 ];
 
+app.use(cors());
+app.use(express.json());
+app.use(express.static("build"));
+morgan.token("body", (req) => {
+  return JSON.stringify(req.body);
+});
+app.use(
+  morgan(":method :url :status :res[content-length] - :response-time ms :body")
+);
+
 app.get("/api/persons", (request, response) => {
-  response.json(persons);
+  Person.find({}).then((persons) => {
+    response.json(persons);
+  });
 });
 
 app.get("/api/persons/:id", (request, response) => {
@@ -53,26 +58,26 @@ app.get("/api/persons/:id", (request, response) => {
 
 app.post("/api/persons", (request, response) => {
   const body = request.body;
-
+/*
   if (!body.name || !body.number) {
     return response.status(400).json({
       error: "content missing",
     });
-  } else if (persons.find((person) => person.name === body.name)) {
+  } else if (Person.find(body.name)) {
     return response.status(400).json({
       error: "name must be unique",
     });
   }
+*/
 
-  const person = {
-    id: Math.floor(Math.random() * 1000),
+  const person = new Person({
     name: body.name,
     number: body.number,
-  };
+  });
 
-  persons = persons.concat(person);
-
-  response.json(person);
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
 });
 
 app.delete("/api/persons/:id", (request, response) => {
