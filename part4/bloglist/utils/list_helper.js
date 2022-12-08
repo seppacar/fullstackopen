@@ -42,7 +42,6 @@ const mostLikes = (blogs) => {
     .sortBy('likes')
     .reverse()
     .value()
-  console.log(groupedByAuthor)
   return blogs.length === 0
     ? 'empty list'
     : groupedByAuthor[0]

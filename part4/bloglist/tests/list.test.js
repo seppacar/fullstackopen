@@ -2,8 +2,6 @@ const listHelper = require('../utils/list_helper')
 const blog_helper = require('../utils/blog_helper')
 
 test('dummy returns one', () => {
-  console.log(listHelper.mostBlogs(blog_helper.listWithManyBlogs))
-
   const blogs = []
 
   const result = listHelper.dummy(blogs)
